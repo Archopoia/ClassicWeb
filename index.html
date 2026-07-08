@@ -1,61 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-order="ionic">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>The Order &mdash; A Treatise on Classical Web Design</title>
-<meta name="description" content="A webpage built as a classical building: order, proportion, hierarchy, rhythm, and a governing module, after the manner of Vignola." />
+<title>The Order &mdash; A Living Treatise on Classical Web Design</title>
+<meta name="description" content="A webpage that obeys and demonstrates the classical laws of Vignola: one governing module, five interactive orders, proportion, symmetry, rhythm, and hierarchy experienced as an architectural procession." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 <style>
 /* =====================================================================
-   I. THE MODULE
-   Nothing is arbitrary. One unit governs the whole composition,
-   exactly as the column diameter governs a classical building.
+   I. THE GOVERNING MODULE
+   One unit rules the whole composition, as a column's diameter rules a
+   temple. Every length below is a multiple or ratio of --module.
+   Nothing is arbitrary.
    ===================================================================== */
 :root {
-  /* The governing module */
   --module: 8px;
 
-  /* Spacing — every gap is a multiple of the module */
-  --s-1: calc(var(--module) * 1);   /*  8px */
-  --s-2: calc(var(--module) * 2);   /* 16px */
-  --s-3: calc(var(--module) * 3);   /* 24px */
-  --s-4: calc(var(--module) * 4);   /* 32px */
-  --s-6: calc(var(--module) * 6);   /* 48px */
-  --s-8: calc(var(--module) * 8);   /* 64px */
-  --s-12: calc(var(--module) * 12); /* 96px */
-  --s-16: calc(var(--module) * 16); /* 128px */
+  /* Spacing — strict multiples of the module */
+  --s-1: calc(var(--module) * 1);    /*  8 */
+  --s-2: calc(var(--module) * 2);    /* 16 */
+  --s-3: calc(var(--module) * 3);    /* 24  — baseline row */
+  --s-4: calc(var(--module) * 4);    /* 32 */
+  --s-5: calc(var(--module) * 5);    /* 40 */
+  --s-6: calc(var(--module) * 6);    /* 48 */
+  --s-8: calc(var(--module) * 8);    /* 64 */
+  --s-10: calc(var(--module) * 10);  /* 80 */
+  --s-12: calc(var(--module) * 12);  /* 96  — the storey */
+  --s-16: calc(var(--module) * 16);  /* 128 */
 
-  /* Typographic scale — a measured progression, not random sizes */
-  --t-caption: 0.875rem;  /* 14 — carved detail */
-  --t-body:    1.125rem;  /* 18 — the wall */
-  --t-sub:     2rem;      /* 32 — structural bay */
-  --t-head:    3rem;      /* 48 — the column */
-  --t-display: 4.5rem;    /* 72 — the pediment */
+  /* The baseline rhythm — one row = 3 modules = 24px */
+  --baseline: var(--s-3);
 
-  /* Proportion — the reading measure and the plan width */
-  --measure: 34rem;        /* ~66 characters per line */
-  --plan: 66rem;           /* the building footprint */
+  /* Reading measure and plan width, expressed in modules */
+  --measure: calc(var(--module) * 68);  /* ~544px ≈ 66 characters */
+  --plan:    calc(var(--module) * 132); /* ~1056px footprint */
+
+  /* Fixed steps (order-independent) */
+  --t-caption: 0.875rem;  /* carved detail */
+  --t-body:    1.125rem;  /* the wall / masonry */
 
   /* Materials */
-  --stone:    #f3ecdd;     /* warm parchment ground */
-  --stone-2:  #ece2ce;     /* deeper course of stone */
-  --marble:   #efe7d6;     /* pale marble panel */
-  --ink:      #29241d;     /* carved inscription */
-  --ink-soft: #5b5142;     /* weathered lettering */
-  --bronze:   #8a6a34;     /* rare, meaningful accent */
-  --bronze-2: #a9863f;
-  --line:     rgba(41, 36, 29, 0.16); /* thin engraved rule */
+  --stone:    #f3ecdd;
+  --stone-2:  #ece2ce;
+  --marble:   #efe7d6;
+  --ink:      #29241d;
+  --ink-soft: #5b5142;
+  --line:        rgba(41, 36, 29, 0.16);
   --line-strong: rgba(41, 36, 29, 0.34);
 
-  --lh-body: 1.7;
-  --lh-tight: 1.12;
+  /* ---- These are OVERRIDDEN by each order below ---- */
+  --t-sub:     2rem;
+  --t-head:    3rem;
+  --t-display: 4.5rem;
+  --w-display: 500;
+  --w-head:    500;
+  --track:     0.16em;     /* inscriptional tracking */
+  --rhythm:    1.7;        /* body line-height */
+  --accent:      #8a6a34;  /* bronze */
+  --accent-2:    #a9863f;
+  --ornament:  0.6;        /* flourish visibility 0..1 */
+  --shaft-w:   34;         /* specimen column diameter (svg units) */
+  --order-ratio: "1 : 1.333";
+  --order-slender: "9 diameters";
 }
 
 /* =====================================================================
-   Reset — a level foundation before building
+   IV. THE FIVE ORDERS AS PROPORTIONAL PERSONALITIES
+   Selecting an order re-proportions the entire page. Each order carries
+   its own type ratio, tracking, weight, ornament, accent, and column
+   slenderness — exactly as Vignola ranged them from plainest to richest.
+   ===================================================================== */
+html[data-order="tuscan"] {
+  --t-sub: 1.62rem; --t-head: 2.05rem; --t-display: 3rem;
+  --w-display: 600; --w-head: 600; --track: 0.06em; --rhythm: 1.58;
+  --accent: #7a6a4a; --accent-2: #8a765123; --ornament: 0.06;
+  --shaft-w: 44; --order-ratio: "1 : 1.2"; --order-slender: "7 diameters";
+}
+html[data-order="doric"] {
+  --t-sub: 1.75rem; --t-head: 2.6rem; --t-display: 3.6rem;
+  --w-display: 600; --w-head: 600; --track: 0.09em; --rhythm: 1.6;
+  --accent: #6f5a2e; --accent-2: #9c7a3f; --ornament: 0.25;
+  --shaft-w: 38; --order-ratio: "1 : 1.25"; --order-slender: "8 diameters";
+}
+html[data-order="ionic"] {
+  --t-sub: 2rem; --t-head: 3rem; --t-display: 4.5rem;
+  --w-display: 500; --w-head: 500; --track: 0.16em; --rhythm: 1.7;
+  --accent: #8a6a34; --accent-2: #a9863f; --ornament: 0.6;
+  --shaft-w: 30; --order-ratio: "1 : 1.333"; --order-slender: "9 diameters";
+}
+html[data-order="corinthian"] {
+  --t-sub: 2.25rem; --t-head: 3.6rem; --t-display: 5.6rem;
+  --w-display: 500; --w-head: 500; --track: 0.2em; --rhythm: 1.75;
+  --accent: #a9863f; --accent-2: #c19a4a; --ornament: 1;
+  --shaft-w: 24; --order-ratio: "1 : 1.414"; --order-slender: "10 diameters";
+}
+html[data-order="composite"] {
+  --t-sub: 2.4rem; --t-head: 3.9rem; --t-display: 6rem;
+  --w-display: 600; --w-head: 500; --track: 0.18em; --rhythm: 1.72;
+  --accent: #9c7a3f; --accent-2: #c19a4a; --ornament: 1;
+  --shaft-w: 24; --order-ratio: "1 : 1.5"; --order-slender: "10 diameters";
+}
+
+/* =====================================================================
+   Foundation reset — a level ground before building
    ===================================================================== */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -63,335 +112,297 @@ body {
   margin: 0;
   background-color: var(--stone);
   background-image:
-    radial-gradient(circle at 50% -10%, rgba(255,255,255,0.5), transparent 45%),
-    repeating-linear-gradient(0deg, rgba(41,36,29,0.014) 0 2px, transparent 2px 4px);
+    radial-gradient(circle at 50% -8%, rgba(255,255,255,0.55), transparent 42%),
+    repeating-linear-gradient(0deg, rgba(41,36,29,0.012) 0 2px, transparent 2px 4px);
   color: var(--ink);
   font-family: "EB Garamond", Georgia, serif;
   font-size: var(--t-body);
-  line-height: var(--lh-body);
+  line-height: var(--rhythm);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: line-height 400ms ease;
+}
+
+/* Elements that participate in the order transition */
+h1, h2, h3, .eyebrow, .btn, .colophon, nav a, .lede,
+.order-name, .readout b, .specimen text {
+  transition: font-size 420ms cubic-bezier(.2,.7,.2,1),
+              letter-spacing 420ms ease, font-weight 420ms ease,
+              color 300ms ease;
 }
 
 /* =====================================================================
-   V. PROPORTIONAL RULES — generous margins, a central spine
+   THE PLAN — generous margins, a central spine
    ===================================================================== */
-.plan {
-  width: 100%;
-  max-width: var(--plan);
-  margin-inline: auto;
-  padding-inline: var(--s-4);
-}
+.plan { width: 100%; max-width: var(--plan); margin-inline: auto; padding-inline: var(--s-4); }
 .measure { max-width: var(--measure); }
 .axis { margin-inline: auto; text-align: center; }
 
-/* Inscriptional lettering */
-.inscription {
-  font-family: "Cinzel", serif;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
+.inscription { font-family: "Cinzel", serif; letter-spacing: var(--track); text-transform: uppercase; }
 
-/* A repeated small label — the section's "order name" */
 .eyebrow {
   font-family: "Cinzel", serif;
   font-size: var(--t-caption);
-  letter-spacing: 0.32em;
+  letter-spacing: calc(var(--track) + 0.12em);
   text-transform: uppercase;
-  color: var(--bronze);
+  color: var(--accent);
   margin: 0 0 var(--s-2);
 }
+.eyebrow .num { color: var(--ink-soft); }
 
-/* Thin rule ornament with a central bronze node */
-.rule {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-2);
-  margin: var(--s-4) 0;
-}
+/* Thin rule ornament with a bronze node */
+.rule { display: flex; align-items: center; justify-content: center; gap: var(--s-2); margin: var(--s-4) 0; }
 .rule::before, .rule::after {
-  content: "";
-  height: 1px;
-  flex: 1 1 auto;
-  max-width: var(--s-16);
+  content: ""; height: 1px; flex: 1 1 auto; max-width: var(--s-16);
   background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
 }
-.rule .node {
-  width: 7px; height: 7px;
-  transform: rotate(45deg);
-  border: 1px solid var(--bronze);
-  background: var(--stone);
-}
+.rule .node { width: 7px; height: 7px; transform: rotate(45deg); border: 1px solid var(--accent); background: var(--stone); }
+
+/* Acanthus flourish — appears only for richer orders via --ornament */
+.flourish { display: block; height: var(--s-4); margin: var(--s-2) auto 0; opacity: var(--ornament); transition: opacity 420ms ease; color: var(--accent); }
 
 /* =====================================================================
-   PEDIMENT + ENTABLATURE (identity & primary navigation)
-   The entrance announces itself: stable, symmetrical, dignified.
+   ENTABLATURE / NAVIGATION — the entrance announces itself
    ===================================================================== */
 .entablature {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: rgba(243, 236, 221, 0.86);
+  position: sticky; top: 0; z-index: 30;
+  background: rgba(243, 236, 221, 0.9);
   backdrop-filter: saturate(1.1) blur(6px);
   border-bottom: 1px solid var(--line);
 }
-.entablature .plan {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  min-height: var(--s-8);
-}
-.entablature nav ul {
-  display: flex;
-  gap: var(--s-4);
-  list-style: none;
-  margin: 0; padding: 0;
-}
+.entablature .plan { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: var(--s-8); }
+.entablature nav ul { display: flex; gap: var(--s-4); list-style: none; margin: 0; padding: 0; }
 .entablature nav.left { justify-self: start; }
 .entablature nav.right { justify-self: end; }
 .entablature nav a {
-  font-family: "Cinzel", serif;
-  font-size: var(--t-caption);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  text-decoration: none;
-  padding-bottom: 2px;
-  border-bottom: 1px solid transparent;
-  transition: color 160ms ease, border-color 160ms ease;
+  font-family: "Cinzel", serif; font-size: var(--t-caption); letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--ink-soft); text-decoration: none;
+  padding-bottom: 2px; border-bottom: 1px solid transparent;
 }
-.entablature nav a:hover { color: var(--ink); border-color: var(--bronze); }
-.colophon {
-  justify-self: center;
-  text-align: center;
-  font-family: "Cinzel", serif;
-  letter-spacing: 0.2em;
-  font-size: var(--t-caption);
-  color: var(--ink);
-}
+.entablature nav a:hover { color: var(--ink); border-color: var(--accent); }
+.colophon { justify-self: center; text-align: center; font-family: "Cinzel", serif; letter-spacing: 0.2em; font-size: var(--t-caption); color: var(--ink); text-decoration: none; }
 
 /* =====================================================================
-   PORTICO (the hero) — the piazza leading into the palace
+   THE INSTRUMENT — a fixed control panel: choose order, reveal module
    ===================================================================== */
-.portico {
-  position: relative;
-  padding-top: var(--s-12);
-  padding-bottom: var(--s-8);
-  overflow: hidden;
+.instrument {
+  position: fixed; right: var(--s-3); bottom: var(--s-3); z-index: 40;
+  width: calc(var(--module) * 30);
+  background: rgba(243, 236, 221, 0.96);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 18px 40px -24px rgba(41,36,29,0.6);
+  padding: var(--s-3);
+  backdrop-filter: blur(6px);
 }
-.facade { display: block; width: 100%; max-width: 720px; margin: 0 auto var(--s-6); }
-.portico h1 {
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 500;
-  font-size: var(--t-display);
-  line-height: var(--lh-tight);
-  margin: 0 0 var(--s-3);
-  letter-spacing: 0.005em;
+.inst-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); margin: 0 0 var(--s-2); }
+.instrument h4 {
+  font-family: "Cinzel", serif; font-size: var(--t-caption); letter-spacing: 0.1em;
+  text-transform: uppercase; margin: 0; color: var(--ink); white-space: nowrap;
 }
-.portico h1 em { font-style: italic; color: var(--bronze); }
-.lede {
-  font-size: 1.35rem;
-  color: var(--ink-soft);
-  margin: 0 auto;
+.instrument h4 .mini { color: var(--accent); display: none; }
+.inst-collapse {
+  font-family: "Cinzel", serif; font-size: 1rem; line-height: 1; width: 22px; height: 22px;
+  border: 1px solid var(--line-strong); background: var(--marble); color: var(--ink);
+  cursor: pointer; flex: none; display: flex; align-items: center; justify-content: center;
 }
-.actions {
-  display: flex;
-  gap: var(--s-3);
-  justify-content: center;
-  margin-top: var(--s-6);
-  flex-wrap: wrap;
-}
-.btn {
-  font-family: "Cinzel", serif;
-  font-size: var(--t-caption);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: var(--s-2) var(--s-4);
-  border: 1px solid var(--ink);
-  color: var(--ink);
-  background: transparent;
+.instrument.collapsed { width: auto; }
+.instrument.collapsed .order-tabs,
+.instrument.collapsed .readout,
+.instrument.collapsed .grid-toggle { display: none; }
+.instrument.collapsed h4 .mini { display: inline; }
+.order-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.order-tab {
+  font-family: "Cinzel", serif; font-size: 0.72rem; letter-spacing: 0.04em;
+  padding: var(--s-1) 2px; border: 1px solid var(--line); background: var(--marble);
+  color: var(--ink-soft); cursor: pointer; text-transform: uppercase;
   transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
 }
-.btn:hover { background: var(--ink); color: var(--stone); }
-.btn--bronze { border-color: var(--bronze); color: var(--bronze); }
-.btn--bronze:hover { background: var(--bronze); color: var(--stone); border-color: var(--bronze); }
+.order-tab:hover { border-color: var(--accent); color: var(--ink); }
+.order-tab[aria-pressed="true"] { background: var(--ink); color: var(--stone); border-color: var(--ink); }
+.readout { font-size: 0.78rem; color: var(--ink-soft); margin: var(--s-2) 0 var(--s-2); text-align: center; line-height: 1.45; }
+.readout b { color: var(--accent); font-family: "Cinzel", serif; letter-spacing: 0.04em; }
+.instrument .grid-toggle {
+  width: 100%; font-family: "Cinzel", serif; font-size: 0.72rem; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: var(--s-1); border: 1px solid var(--ink);
+  background: transparent; color: var(--ink); cursor: pointer;
+}
+.instrument .grid-toggle[aria-pressed="true"] { background: var(--accent); color: var(--stone); border-color: var(--accent); }
 
 /* =====================================================================
-   MAIN HALL — principal content. Every section repeats one rhythm:
-   label -> title -> description -> detail
+   THE CENTRAL AXIS + MODULE GRID (interactive overlays)
    ===================================================================== */
-section { padding-block: var(--s-12); }
+.overlay { position: fixed; inset: 0; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 300ms ease; }
+body.show-grid .overlay { opacity: 1; }
+.overlay .baseline {
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(0deg, rgba(138,106,52,0.16) 0 1px, transparent 1px var(--module));
+}
+.overlay .spine {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: 1px;
+  background: rgba(138,106,52,0.5);
+}
+.overlay .walls {
+  position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: var(--plan); border-inline: 1px dashed rgba(138,106,52,0.4);
+}
+
+/* =====================================================================
+   CIRCULATION RAIL — the processional; scroll-spy of rooms (desktop)
+   ===================================================================== */
+.circulation {
+  position: fixed; left: var(--s-3); top: 50%; transform: translateY(-50%); z-index: 25;
+  display: flex; flex-direction: column; gap: var(--s-2);
+}
+.circulation a {
+  font-family: "Cinzel", serif; font-size: 0.72rem; letter-spacing: 0.08em;
+  color: var(--ink-soft); text-decoration: none; display: flex; align-items: center; gap: var(--s-1);
+  opacity: 0.6; transition: opacity 200ms ease, color 200ms ease;
+}
+.circulation a::before { content: ""; width: 14px; height: 1px; background: var(--line-strong); transition: width 200ms ease, background 200ms ease; }
+.circulation a:hover { opacity: 1; color: var(--ink); }
+.circulation a.here { opacity: 1; color: var(--accent); }
+.circulation a.here::before { width: 28px; background: var(--accent); }
+
+/* =====================================================================
+   PORTICO / HERO
+   ===================================================================== */
+.portico { position: relative; padding-top: var(--s-12); padding-bottom: var(--s-10); overflow: hidden; }
+.facade { display: block; width: 100%; max-width: calc(var(--module) * 90); margin: 0 auto var(--s-6); }
+.portico h1 {
+  font-family: "Cormorant Garamond", serif; font-weight: var(--w-display);
+  font-size: var(--t-display); line-height: 1.08; margin: 0 0 var(--s-3);
+}
+.portico h1 em { font-style: italic; color: var(--accent); }
+.lede { font-size: 1.3rem; color: var(--ink-soft); margin: 0 auto; }
+.actions { display: flex; gap: var(--s-3); justify-content: center; margin-top: var(--s-6); flex-wrap: wrap; }
+.btn {
+  font-family: "Cinzel", serif; font-size: var(--t-caption); letter-spacing: var(--track);
+  text-transform: uppercase; text-decoration: none; padding: var(--s-2) var(--s-4);
+  border: 1px solid var(--ink); color: var(--ink); background: transparent; cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease, letter-spacing 420ms ease;
+}
+.btn:hover { background: var(--ink); color: var(--stone); }
+.btn--bronze { border-color: var(--accent); color: var(--accent); }
+.btn--bronze:hover { background: var(--accent); color: var(--stone); border-color: var(--accent); }
+
+/* =====================================================================
+   ROOMS (sections)
+   ===================================================================== */
+section { padding-block: var(--s-12); position: relative; scroll-margin-top: var(--s-8); }
 .section-head { margin-bottom: var(--s-8); }
 .section-head h2 {
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 500;
-  font-size: var(--t-head);
-  line-height: var(--lh-tight);
-  margin: 0 0 var(--s-2);
+  font-family: "Cormorant Garamond", serif; font-weight: var(--w-head);
+  font-size: var(--t-head); line-height: 1.1; margin: 0 0 var(--s-2);
 }
 .section-head p { margin: 0 auto; color: var(--ink-soft); }
+.ground { background: var(--stone-2); border-block: 1px solid var(--line); }
 
-/* The module, shown as a stack of measured courses */
-.module-figure {
-  display: grid;
-  gap: var(--s-1);
-  max-width: 30rem;
-  margin: var(--s-6) auto 0;
-}
-.course {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--marble);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--bronze);
-  padding: var(--s-1) var(--s-3);
-}
-.course b { font-family: "Cinzel", serif; font-size: var(--t-caption); letter-spacing: 0.1em; }
-.course span { color: var(--ink-soft); font-size: var(--t-caption); }
-.course .bar { height: 6px; background: var(--bronze-2); opacity: 0.5; }
+/* Module figure — courses at true module widths */
+.module-figure { display: grid; gap: var(--s-1); max-width: calc(var(--module) * 56); margin: var(--s-6) auto 0; }
+.course { display: grid; grid-template-columns: 3.5rem 1fr auto; align-items: center; gap: var(--s-2);
+  background: var(--marble); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: var(--s-1) var(--s-3); }
+.course b { font-family: "Cinzel", serif; font-size: var(--t-caption); letter-spacing: 0.08em; }
+.course .bar { height: 8px; background: var(--accent-2); opacity: 0.55; }
+.course span { color: var(--ink-soft); font-size: var(--t-caption); text-align: right; }
 
-/* IV. THE FIVE ORDERS — rhythm through repetition (the colonnade) */
-.colonnade {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: var(--s-3);
-  align-items: end;
-}
-.order {
-  background: var(--marble);
-  border: 1px solid var(--line);
-  padding: var(--s-4) var(--s-3) var(--s-3);
-  text-align: center;
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-.order:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px -18px rgba(41,36,29,0.5);
-}
-.order svg { display: block; margin: 0 auto var(--s-2); height: 132px; }
-.order h3 {
-  font-family: "Cinzel", serif;
-  font-size: 1rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  margin: 0 0 var(--s-1);
-}
-.order p { font-size: var(--t-caption); color: var(--ink-soft); margin: 0; line-height: 1.5; }
+/* The Orders room: specimen column + descriptions */
+.orders-room { display: grid; grid-template-columns: calc(var(--module) * 34) 1fr; gap: var(--s-8); align-items: center; }
+.specimen-wrap { text-align: center; }
+.specimen { width: 100%; max-width: calc(var(--module) * 30); height: auto; margin-inline: auto; }
+.specimen .shaft { x: calc((200px - var(--shaft-w) * 1px) / 2); width: calc(var(--shaft-w) * 1px); transition: width 500ms cubic-bezier(.2,.7,.2,1), x 500ms cubic-bezier(.2,.7,.2,1); }
+.order-name { font-family: "Cinzel", serif; font-size: var(--t-sub); letter-spacing: var(--track); text-transform: uppercase; margin: var(--s-3) 0 0; }
+.order-desc dl { margin: 0; }
+.order-desc dt { font-family: "Cinzel", serif; font-size: var(--t-caption); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-top: var(--s-3); }
+.order-desc dd { margin: var(--s-1) 0 0; color: var(--ink-soft); }
+.order-desc dd.hint { font-style: italic; }
 
-/* XII. RESPONSIVE ORDERS — column / center / column */
-.tripartite {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr 1fr;
-  gap: var(--s-6);
-  align-items: start;
-}
-.chamber h3 {
-  font-family: "Cinzel", serif;
-  font-size: 1rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin: 0 0 var(--s-2);
-  padding-bottom: var(--s-1);
-  border-bottom: 1px solid var(--line);
-}
-.chamber p { margin: 0 0 var(--s-2); color: var(--ink-soft); font-size: 1.05rem; }
-.chamber.center { text-align: center; }
+/* Golden section diagram */
+.phi-room { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-8); align-items: center; }
+.phi-figure { width: 100%; height: auto; border: 1px solid var(--line); background: var(--marble); }
+.ledger { list-style: none; margin: 0; padding: 0; }
+.ledger li { display: flex; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) 0; border-bottom: 1px solid var(--line); }
+.ledger li:first-child { border-top: 1px solid var(--line); }
+.ledger .ratio { font-family: "Cinzel", serif; letter-spacing: 0.06em; color: var(--accent); white-space: nowrap; }
 
-/* The building plan diagram — hierarchy from pediment to foundation */
-.blueprint {
-  border: 1px solid var(--line-strong);
-  background:
-    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% var(--s-4),
-    var(--marble);
-  padding: var(--s-4);
-  max-width: 40rem;
-  margin: var(--s-6) auto 0;
-}
-.storey {
-  text-align: center;
-  padding: var(--s-2);
-  margin-bottom: var(--s-1);
-  border: 1px dashed var(--line-strong);
-  background: rgba(243,236,221,0.6);
-}
+/* Symmetry room — mirrored bays about the axis */
+.symmetry { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--s-4); align-items: stretch; }
+.bay { background: var(--marble); border: 1px solid var(--line); padding: var(--s-4); }
+.bay h3 { font-family: "Cinzel", serif; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 var(--s-2); }
+.bay p { margin: 0; color: var(--ink-soft); font-size: 1.02rem; }
+.bay.mirror { text-align: right; }
+.axis-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-1); color: var(--accent); }
+.axis-mark .line { width: 1px; flex: 1; background: linear-gradient(var(--accent), transparent, var(--accent)); }
+
+/* Rhythm room — a colonnade of intercolumniation */
+.rhythm-colonnade { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--s-3); align-items: end; max-width: calc(var(--module) * 96); margin: var(--s-6) auto 0; }
+.mini-col { display: grid; justify-items: center; gap: var(--s-1); }
+.mini-col svg { height: 96px; }
+.mini-col span { font-family: "Cinzel", serif; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--ink-soft); }
+
+/* The Plan / hierarchy blueprint */
+.blueprint { border: 1px solid var(--line-strong);
+  background: linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% var(--s-3), var(--marble);
+  padding: var(--s-4); max-width: calc(var(--module) * 80); margin: var(--s-6) auto 0; }
+.storey { text-align: center; padding: var(--s-2); margin-bottom: var(--s-1); border: 1px dashed var(--line-strong); background: rgba(243,236,221,0.6); }
 .storey:last-child { margin-bottom: 0; }
-.storey b {
-  display: block;
-  font-family: "Cinzel", serif;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-size: var(--t-caption);
-}
+.storey b { display: block; font-family: "Cinzel", serif; letter-spacing: 0.14em; text-transform: uppercase; font-size: var(--t-caption); }
 .storey span { font-size: var(--t-caption); color: var(--ink-soft); }
 .storey.crown { background: var(--ink); color: var(--stone); border-style: solid; }
 .storey.crown span { color: rgba(243,236,221,0.7); }
 
-/* Proportion ledger */
-.ledger {
-  list-style: none;
-  margin: var(--s-4) 0 0;
-  padding: 0;
-  max-width: 30rem;
-  margin-inline: auto;
-}
-.ledger li {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--s-3);
-  padding: var(--s-2) 0;
-  border-bottom: 1px solid var(--line);
-}
-.ledger li:first-child { border-top: 1px solid var(--line); }
-.ledger .ratio { font-family: "Cinzel", serif; letter-spacing: 0.08em; color: var(--bronze); }
+/* Unity in variety — one language, many details */
+.tripartite { display: grid; grid-template-columns: 1fr 1.35fr 1fr; gap: var(--s-6); align-items: start; }
+.chamber h3 { font-family: "Cinzel", serif; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 var(--s-2); padding-bottom: var(--s-1); border-bottom: 1px solid var(--line); }
+.chamber p { margin: 0 0 var(--s-2); color: var(--ink-soft); font-size: 1.04rem; }
+.chamber.center { text-align: center; }
 
-/* Alternating stone courses for section grounds */
-.ground { background: var(--stone-2); border-block: 1px solid var(--line); }
-
-/* =====================================================================
-   FOUNDATION (footer)
-   ===================================================================== */
-.foundation {
-  background: var(--ink);
-  color: var(--stone);
-  padding-block: var(--s-8);
-  text-align: center;
-}
-.foundation .inscription { font-size: var(--t-caption); letter-spacing: 0.28em; color: var(--bronze-2); }
+/* Foundation */
+.foundation { background: var(--ink); color: var(--stone); padding-block: var(--s-8); text-align: center; }
+.foundation .inscription { font-size: var(--t-caption); letter-spacing: 0.26em; color: var(--accent-2); }
 .foundation p { color: rgba(243,236,221,0.72); max-width: var(--measure); margin: var(--s-3) auto; }
-.foundation .rule::before, .foundation .rule::after {
-  background: linear-gradient(90deg, transparent, rgba(243,236,221,0.4), transparent);
-}
-.foundation small { color: rgba(243,236,221,0.5); font-size: var(--t-caption); letter-spacing: 0.08em; }
+.foundation .rule::before, .foundation .rule::after { background: linear-gradient(90deg, transparent, rgba(243,236,221,0.4), transparent); }
+.foundation small { color: rgba(243,236,221,0.5); font-size: var(--t-caption); letter-spacing: 0.06em; }
 
-/* Quiet, dignified entrance of the composition */
+/* Quiet, dignified entrance */
 @media (prefers-reduced-motion: no-preference) {
   .reveal { opacity: 0; transform: translateY(14px); }
   .reveal.seen { opacity: 1; transform: none; transition: opacity 700ms ease, transform 700ms ease; }
 }
 
 /* =====================================================================
-   XII. RESPONSIVE — the order remains; only the arrangement changes
+   RESPONSIVE — the order remains; only the arrangement changes
    ===================================================================== */
-@media (max-width: 60rem) {
-  :root { --t-display: 3.25rem; --t-head: 2.4rem; }
-  .colonnade { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 68rem) {
+  .circulation { display: none; }
+  .orders-room, .phi-room { grid-template-columns: 1fr; gap: var(--s-6); }
+  .rhythm-colonnade { grid-template-columns: repeat(7, 1fr); }
+}
+@media (max-width: 52rem) {
+  .symmetry { grid-template-columns: 1fr; }
+  .bay.mirror { text-align: left; }
+  .axis-mark { flex-direction: row; height: var(--s-4); }
   .tripartite { grid-template-columns: 1fr; text-align: center; }
   .chamber.center { order: -1; }
   .chamber h3 { display: inline-block; }
+  .rhythm-colonnade { grid-template-columns: repeat(4, 1fr); }
 }
 @media (max-width: 40rem) {
   .entablature nav.left, .entablature nav.right { display: none; }
   .entablature .plan { grid-template-columns: 1fr; justify-items: center; }
-  .colonnade { grid-template-columns: 1fr; max-width: 20rem; margin-inline: auto; }
+  .instrument { left: var(--s-2); right: var(--s-2); width: auto; bottom: var(--s-2); }
   .actions { flex-direction: column; align-items: stretch; }
-  .btn { text-align: center; }
+  .rhythm-colonnade { grid-template-columns: repeat(3, 1fr); }
 }
 </style>
 </head>
 <body>
+
+<!-- Interactive overlays: the 8px module grid, the central spine, the walls -->
+<div class="overlay" aria-hidden="true">
+  <div class="baseline"></div>
+  <div class="walls"></div>
+  <div class="spine"></div>
+</div>
 
 <!-- ============================ ENTABLATURE / NAVIGATION ============================ -->
 <header class="entablature">
@@ -402,7 +413,7 @@ section { padding-block: var(--s-12); }
         <li><a href="#orders">Orders</a></li>
       </ul>
     </nav>
-    <a class="colophon" href="#top">&#8228; THE ORDER &#8228;</a>
+    <a class="colophon" href="#top">&#8228;&nbsp;THE ORDER&nbsp;&#8228;</a>
     <nav class="right" aria-label="Secondary">
       <ul>
         <li><a href="#proportion">Proportion</a></li>
@@ -412,90 +423,83 @@ section { padding-block: var(--s-12); }
   </div>
 </header>
 
+<!-- ============================ CIRCULATION RAIL (scroll-spy) ============================ -->
+<nav class="circulation" aria-label="Procession">
+  <a href="#top" data-room="top" class="here">I</a>
+  <a href="#module" data-room="module">II</a>
+  <a href="#orders" data-room="orders">III</a>
+  <a href="#proportion" data-room="proportion">IV</a>
+  <a href="#symmetry" data-room="symmetry">V</a>
+  <a href="#rhythm" data-room="rhythm">VI</a>
+  <a href="#plan" data-room="plan">VII</a>
+  <a href="#unity" data-room="unity">VIII</a>
+</nav>
+
 <main id="top">
 
-  <!-- ============================ PORTICO / HERO ============================ -->
+  <!-- ============================ I. PORTICO / HERO ============================ -->
   <section class="portico">
     <div class="plan axis">
-      <!-- Ornament that reveals structure: a temple front (pediment + colonnade + stylobate) -->
       <svg class="facade reveal" viewBox="0 0 720 300" role="img" aria-label="A classical temple facade">
         <defs>
           <linearGradient id="shaft" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#e7dcc4"/>
-            <stop offset="0.5" stop-color="#f6efe0"/>
-            <stop offset="1" stop-color="#e2d6bc"/>
+            <stop offset="0" stop-color="#e7dcc4"/><stop offset="0.5" stop-color="#f6efe0"/><stop offset="1" stop-color="#e2d6bc"/>
           </linearGradient>
         </defs>
         <g fill="none" stroke="#29241d" stroke-width="1.5">
-          <!-- Pediment -->
           <polygon points="360,18 690,120 30,120" fill="#efe7d6"/>
-          <polygon points="360,44 640,120 80,120" fill="none" stroke="#8a6a34" stroke-width="1"/>
-          <circle cx="360" cy="92" r="8" fill="#8a6a34" stroke="none"/>
-          <!-- Entablature -->
+          <polygon points="360,44 640,120 80,120" fill="none" stroke="currentColor" style="stroke:var(--accent)" stroke-width="1"/>
+          <circle cx="360" cy="92" r="8" style="fill:var(--accent)" stroke="none"/>
           <rect x="30" y="120" width="660" height="16" fill="#e7dcc4"/>
           <rect x="30" y="136" width="660" height="10" fill="#efe7d6"/>
-          <!-- Colonnade: six columns -->
           <g>
-            <!-- column template repeated -->
-            <g>
-              <rect x="70"  y="150" width="34" height="112" fill="url(#shaft)"/>
-              <rect x="184" y="150" width="34" height="112" fill="url(#shaft)"/>
-              <rect x="298" y="150" width="34" height="112" fill="url(#shaft)"/>
-              <rect x="388" y="150" width="34" height="112" fill="url(#shaft)"/>
-              <rect x="502" y="150" width="34" height="112" fill="url(#shaft)"/>
-              <rect x="616" y="150" width="34" height="112" fill="url(#shaft)"/>
-            </g>
-            <!-- capitals -->
-            <g fill="#e7dcc4">
-              <rect x="64"  y="146" width="46" height="6"/>
-              <rect x="178" y="146" width="46" height="6"/>
-              <rect x="292" y="146" width="46" height="6"/>
-              <rect x="382" y="146" width="46" height="6"/>
-              <rect x="496" y="146" width="46" height="6"/>
-              <rect x="610" y="146" width="46" height="6"/>
-            </g>
-            <!-- flutes (thin vertical rules) -->
-            <g stroke="#c9bb9c" stroke-width="0.75">
-              <line x1="81" y1="152" x2="81" y2="260"/><line x1="93" y1="152" x2="93" y2="260"/>
-              <line x1="195" y1="152" x2="195" y2="260"/><line x1="207" y1="152" x2="207" y2="260"/>
-              <line x1="309" y1="152" x2="309" y2="260"/><line x1="321" y1="152" x2="321" y2="260"/>
-              <line x1="399" y1="152" x2="399" y2="260"/><line x1="411" y1="152" x2="411" y2="260"/>
-              <line x1="513" y1="152" x2="513" y2="260"/><line x1="525" y1="152" x2="525" y2="260"/>
-              <line x1="627" y1="152" x2="627" y2="260"/><line x1="639" y1="152" x2="639" y2="260"/>
-            </g>
+            <rect x="70" y="150" width="34" height="112" fill="url(#shaft)"/><rect x="184" y="150" width="34" height="112" fill="url(#shaft)"/>
+            <rect x="298" y="150" width="34" height="112" fill="url(#shaft)"/><rect x="388" y="150" width="34" height="112" fill="url(#shaft)"/>
+            <rect x="502" y="150" width="34" height="112" fill="url(#shaft)"/><rect x="616" y="150" width="34" height="112" fill="url(#shaft)"/>
           </g>
-          <!-- Stylobate / steps -->
+          <g fill="#e7dcc4">
+            <rect x="64" y="146" width="46" height="6"/><rect x="178" y="146" width="46" height="6"/><rect x="292" y="146" width="46" height="6"/>
+            <rect x="382" y="146" width="46" height="6"/><rect x="496" y="146" width="46" height="6"/><rect x="610" y="146" width="46" height="6"/>
+          </g>
+          <g stroke="#c9bb9c" stroke-width="0.75">
+            <line x1="81" y1="152" x2="81" y2="260"/><line x1="93" y1="152" x2="93" y2="260"/>
+            <line x1="195" y1="152" x2="195" y2="260"/><line x1="207" y1="152" x2="207" y2="260"/>
+            <line x1="309" y1="152" x2="309" y2="260"/><line x1="321" y1="152" x2="321" y2="260"/>
+            <line x1="399" y1="152" x2="399" y2="260"/><line x1="411" y1="152" x2="411" y2="260"/>
+            <line x1="513" y1="152" x2="513" y2="260"/><line x1="525" y1="152" x2="525" y2="260"/>
+            <line x1="627" y1="152" x2="627" y2="260"/><line x1="639" y1="152" x2="639" y2="260"/>
+          </g>
           <rect x="40" y="262" width="640" height="10" fill="#e7dcc4"/>
           <rect x="20" y="272" width="680" height="12" fill="#e2d6bc"/>
         </g>
       </svg>
 
-      <p class="eyebrow reveal">Regola &mdash; after Vignola</p>
+      <p class="eyebrow reveal"><span class="num">Room I</span> &middot; Regola, after Vignola</p>
       <h1 class="reveal">A page built as a<br /><em>building</em>, not a screen.</h1>
       <p class="lede measure reveal">
         Order before novelty. Proportion before decoration. Structure before style.
-        This is not a website that looks like a temple &mdash; it is a website that obeys
-        the same laws that make temples endure.
+        Choose an order below and watch the whole page re-proportion itself &mdash;
+        for an order is not a style, but a system of relationships.
       </p>
       <div class="actions reveal">
-        <a class="btn btn--bronze" href="#module">Enter the Colonnade</a>
-        <a class="btn" href="#plan">Read the Plan</a>
+        <a class="btn btn--bronze" href="#orders">Choose an Order</a>
+        <a class="btn" href="#module">See the Module</a>
       </div>
     </div>
   </section>
 
-  <!-- ============================ I. THE MODULE ============================ -->
+  <!-- ============================ II. THE MODULE ============================ -->
   <section id="module" class="ground">
     <div class="plan">
       <div class="section-head axis measure reveal">
-        <p class="eyebrow">I &middot; The Module</p>
+        <p class="eyebrow"><span class="num">Room II</span> &middot; The Module</p>
         <h2>Everything begins with one unit</h2>
-        <p>As the column diameter governs a building, a single module of <b>8&nbsp;pixels</b> governs this page. No margin, size, or gap is arbitrary; each is a measured multiple of the whole.</p>
+        <p>As the column&rsquo;s diameter governs a temple, a single module of <b>8&nbsp;pixels</b> governs this page. Press <em>&ldquo;Reveal the Module&rdquo;</em> in the instrument to see the true 8px grid and central axis beneath every element.</p>
       </div>
       <div class="module-figure reveal">
-        <div class="course"><b>1&times;</b><span class="bar" style="width:8px"></span><span>8px &middot; hairline gap</span></div>
+        <div class="course"><b>1&times;</b><span class="bar" style="width:8px"></span><span>8px &middot; hairline</span></div>
         <div class="course"><b>2&times;</b><span class="bar" style="width:16px"></span><span>16px &middot; text spacing</span></div>
-        <div class="course"><b>3&times;</b><span class="bar" style="width:24px"></span><span>24px &middot; inner padding</span></div>
+        <div class="course"><b>3&times;</b><span class="bar" style="width:24px"></span><span>24px &middot; the baseline row</span></div>
         <div class="course"><b>4&times;</b><span class="bar" style="width:32px"></span><span>32px &middot; page margin</span></div>
         <div class="course"><b>8&times;</b><span class="bar" style="width:64px"></span><span>64px &middot; the bay</span></div>
         <div class="course"><b>12&times;</b><span class="bar" style="width:96px"></span><span>96px &middot; the storey</span></div>
@@ -504,106 +508,147 @@ section { padding-block: var(--s-12); }
     </div>
   </section>
 
-  <!-- ============================ IV. THE FIVE ORDERS ============================ -->
+  <!-- ============================ III. THE FIVE ORDERS (interactive) ============================ -->
   <section id="orders">
     <div class="plan">
       <div class="section-head axis measure reveal">
-        <p class="eyebrow">IV &middot; The Five Orders</p>
-        <h2>A character for every purpose</h2>
-        <p>Vignola ranged the orders from plainest to richest. A page, too, may choose its temperament &mdash; then hold to it with discipline.</p>
+        <p class="eyebrow"><span class="num">Room III</span> &middot; The Five Orders</p>
+        <h2>An order is a personality</h2>
+        <p>Vignola ranged the orders from plainest (Tuscan) to richest (Composite). Each carries its own slenderness, proportion, tracking, and ornament. Select one &mdash; the entire treatise obeys it.</p>
       </div>
 
-      <div class="colonnade">
-        <!-- Each order drawn with progressively richer capitals -->
-        <article class="order reveal">
-          <svg viewBox="0 0 60 132" aria-hidden="true">
-            <rect x="16" y="16" width="28" height="8" fill="#e2d6bc" stroke="#29241d"/>
-            <rect x="22" y="24" width="16" height="96" fill="url(#shaft)" stroke="#29241d"/>
-            <rect x="14" y="120" width="32" height="10" fill="#e2d6bc" stroke="#29241d"/>
+      <div class="orders-room reveal">
+        <div class="specimen-wrap">
+          <svg class="specimen" viewBox="0 0 200 420" role="img" aria-label="A specimen column that changes proportion with the chosen order">
+            <!-- entablature the column carries -->
+            <rect x="20" y="10" width="160" height="18" fill="#e7dcc4" stroke="#29241d"/>
+            <rect x="30" y="28" width="140" height="10" fill="#efe7d6" stroke="#29241d"/>
+            <!-- capital -->
+            <rect x="55" y="40" width="90" height="10" fill="#e2d6bc" stroke="#29241d"/>
+            <!-- the shaft: width bound to the current order via --shaft-w -->
+            <rect class="shaft" y="50" height="320" fill="url(#shaft)" stroke="#29241d"/>
+            <!-- base -->
+            <rect x="50" y="370" width="100" height="14" fill="#e2d6bc" stroke="#29241d"/>
+            <rect x="36" y="384" width="128" height="14" fill="#e7dcc4" stroke="#29241d"/>
           </svg>
-          <h3>Tuscan</h3>
-          <p>Reliability. Plain shaft, strong spacing, no excess. For engineering &amp; the state.</p>
-        </article>
+          <p class="order-name" id="orderName">Ionic</p>
+        </div>
 
-        <article class="order reveal">
-          <svg viewBox="0 0 60 132" aria-hidden="true">
-            <rect x="14" y="16" width="32" height="6" fill="#e2d6bc" stroke="#29241d"/>
-            <rect x="18" y="22" width="24" height="6" fill="#efe7d6" stroke="#29241d"/>
-            <rect x="22" y="28" width="16" height="92" fill="url(#shaft)" stroke="#29241d"/>
-            <rect x="14" y="120" width="32" height="10" fill="#e2d6bc" stroke="#29241d"/>
+        <div class="order-desc">
+          <dl>
+            <dt>Character</dt>
+            <dd id="orderChar">Refinement. Slender proportion, scroll-volutes, elegance without excess.</dd>
+            <dt>Proportion of shaft</dt>
+            <dd id="orderProp">Height to diameter &mdash; 9 diameters. Type ratio 1 : 1.333.</dd>
+            <dt>Fit for</dt>
+            <dd id="orderUse">Culture, education, refined institutions.</dd>
+            <dd class="hint">Try each in the instrument, lower-right &mdash; watch the shaft, the type, the tracking, and the ornament change together.</dd>
+          </dl>
+          <svg class="flourish" viewBox="0 0 120 24" aria-hidden="true">
+            <path d="M60 20 C40 20 44 4 30 6 C18 8 20 18 8 16 M60 20 C80 20 76 4 90 6 C102 8 100 18 112 16" fill="none" stroke="currentColor" stroke-width="1.4"/>
+            <circle cx="60" cy="18" r="2.5" fill="currentColor"/>
           </svg>
-          <h3>Doric</h3>
-          <p>Authority. Bold headings, large proportions, strong horizontal divisions.</p>
-        </article>
-
-        <article class="order reveal">
-          <svg viewBox="0 0 60 132" aria-hidden="true">
-            <path d="M14 22 q6 -8 14 0 M46 22 q-6 -8 -14 0" fill="none" stroke="#8a6a34"/>
-            <circle cx="20" cy="22" r="4" fill="none" stroke="#8a6a34"/>
-            <circle cx="40" cy="22" r="4" fill="none" stroke="#8a6a34"/>
-            <rect x="16" y="26" width="28" height="4" fill="#efe7d6" stroke="#29241d"/>
-            <rect x="23" y="30" width="14" height="90" fill="url(#shaft)" stroke="#29241d"/>
-            <rect x="16" y="120" width="28" height="10" fill="#e2d6bc" stroke="#29241d"/>
-          </svg>
-          <h3>Ionic</h3>
-          <p>Refinement. Scroll-volutes, balanced whitespace, elegance without excess.</p>
-        </article>
-
-        <article class="order reveal">
-          <svg viewBox="0 0 60 132" aria-hidden="true">
-            <path d="M22 14 q-8 6 -6 14 M38 14 q8 6 6 14" fill="none" stroke="#8a6a34"/>
-            <path d="M30 12 q-4 8 0 16 q4 -8 0 -16" fill="none" stroke="#8a6a34"/>
-            <rect x="16" y="28" width="28" height="4" fill="#efe7d6" stroke="#29241d"/>
-            <rect x="24" y="32" width="12" height="88" fill="url(#shaft)" stroke="#29241d"/>
-            <rect x="16" y="120" width="28" height="10" fill="#e2d6bc" stroke="#29241d"/>
-          </svg>
-          <h3>Corinthian</h3>
-          <p>Richness. Acanthus detail, expressive imagery, ornament used with intent.</p>
-        </article>
-
-        <article class="order reveal">
-          <svg viewBox="0 0 60 132" aria-hidden="true">
-            <path d="M14 24 q6 -8 12 -2 M46 24 q-6 -8 -12 -2" fill="none" stroke="#8a6a34"/>
-            <path d="M30 12 q-5 8 0 16 q5 -8 0 -16" fill="none" stroke="#8a6a34"/>
-            <rect x="16" y="28" width="28" height="4" fill="#efe7d6" stroke="#29241d"/>
-            <rect x="24" y="32" width="12" height="88" fill="url(#shaft)" stroke="#29241d"/>
-            <rect x="16" y="120" width="28" height="10" fill="#e2d6bc" stroke="#29241d"/>
-          </svg>
-          <h3>Composite</h3>
-          <p>Union. Strength and elegance joined &mdash; many systems, one unity.</p>
-        </article>
+        </div>
       </div>
       <div class="rule"><span class="node"></span></div>
-      <p class="axis measure reveal" style="color:var(--ink-soft)">This treatise is set in the <b>Ionic</b> manner: slender proportion, refined lettering, and quiet whitespace.</p>
     </div>
   </section>
 
-  <!-- ============================ VIII. PROPORTION ============================ -->
+  <!-- ============================ IV. PROPORTION / GOLDEN SECTION ============================ -->
   <section id="proportion" class="ground">
     <div class="plan">
       <div class="section-head axis measure reveal">
-        <p class="eyebrow">VIII &middot; Proportion</p>
+        <p class="eyebrow"><span class="num">Room IV</span> &middot; Proportion</p>
         <h2>Beauty is correct relationship</h2>
-        <p>The question is never &ldquo;how big?&rdquo; but &ldquo;how does this relate to the rest?&rdquo; The type scale and the layout answer with harmonic ratios.</p>
+        <p>Never &ldquo;how big?&rdquo; but &ldquo;how does this relate to the rest?&rdquo; The page&rsquo;s type and layout answer with harmonic ratios &mdash; above all the golden section, &phi; = 1 : 1.618.</p>
       </div>
-      <ul class="ledger reveal">
-        <li><span>Pediment &rarr; Column</span><span class="ratio">72 : 48 &nbsp;=&nbsp; 3 : 2</span></li>
-        <li><span>Column &rarr; Bay</span><span class="ratio">48 : 32 &nbsp;=&nbsp; 3 : 2</span></li>
-        <li><span>Reading measure</span><span class="ratio">&asymp; 66 characters</span></li>
-        <li><span>Vertical rhythm</span><span class="ratio">1 : 1.7 line height</span></li>
-        <li><span>The whole</span><span class="ratio">&phi; &nbsp; 1 : 1.618</span></li>
-      </ul>
+      <div class="phi-room reveal">
+        <svg class="phi-figure" viewBox="0 0 262 162" role="img" aria-label="The golden rectangle subdivided into squares with a golden spiral">
+          <g fill="none" stroke="var(--line-strong)" stroke-width="1">
+            <rect x="1" y="1" width="260" height="160"/>
+            <rect x="1" y="1" width="160" height="160"/>
+            <rect x="161" y="1" width="100" height="100"/>
+            <rect x="161" y="101" width="60" height="60"/>
+            <rect x="221" y="101" width="40" height="40"/>
+          </g>
+          <path d="M161 1 A160 160 0 0 0 1 161" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          <path d="M161 101 A100 100 0 0 0 261 1" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          <path d="M221 101 A60 60 0 0 0 161 41" fill="none" stroke="var(--accent)" stroke-width="1.6" opacity="0.85"/>
+          <text x="80" y="86" text-anchor="middle" font-family="Cinzel, serif" font-size="13" fill="var(--ink-soft)">1</text>
+          <text x="211" y="56" text-anchor="middle" font-family="Cinzel, serif" font-size="10" fill="var(--ink-soft)">0.618</text>
+        </svg>
+        <div>
+          <ul class="ledger">
+            <li><span>The whole page &phi;</span><span class="ratio">1 : 1.618</span></li>
+            <li><span>Pediment &rarr; column</span><span class="ratio">3 : 2</span></li>
+            <li><span>Column &rarr; bay</span><span class="ratio">3 : 2</span></li>
+            <li><span>Reading measure</span><span class="ratio">&asymp; 66 chars</span></li>
+            <li><span>Baseline rhythm</span><span class="ratio">3 modules</span></li>
+            <li><span>Current type ratio</span><span class="ratio" id="ratioReadout">1 : 1.333</span></li>
+          </ul>
+          <p style="color:var(--ink-soft); margin-top:var(--s-3)">The last line changes with the order you choose &mdash; proportion is not fixed decoration but a living system.</p>
+        </div>
+      </div>
       <div class="rule"><span class="node"></span></div>
     </div>
   </section>
 
-  <!-- ============================ II. THE PLAN ============================ -->
+  <!-- ============================ V. SYMMETRY & THE AXIS ============================ -->
+  <section id="symmetry">
+    <div class="plan">
+      <div class="section-head axis measure reveal">
+        <p class="eyebrow"><span class="num">Room V</span> &middot; Symmetry</p>
+        <h2>Balance about a centre</h2>
+        <p>Symmetry is not sameness; it is equilibrium. Every important element is weighed against its answer across a central axis.</p>
+      </div>
+      <div class="symmetry reveal">
+        <div class="bay">
+          <h3>Left Wing</h3>
+          <p>Introduction answers conclusion. Problem answers solution. Question answers answer. The left is measured against the right.</p>
+        </div>
+        <div class="axis-mark" aria-hidden="true">
+          <span class="line"></span>
+          <span class="node" style="width:9px;height:9px;transform:rotate(45deg);border:1px solid var(--accent);background:var(--stone)"></span>
+          <span class="line"></span>
+        </div>
+        <div class="bay mirror">
+          <h3>Right Wing</h3>
+          <p>Equal in weight, mirrored in structure, distinct in detail. The eye rests because nothing pulls it off the spine.</p>
+        </div>
+      </div>
+      <div class="rule"><span class="node"></span></div>
+    </div>
+  </section>
+
+  <!-- ============================ VI. RHYTHM & REPETITION ============================ -->
+  <section id="rhythm" class="ground">
+    <div class="plan">
+      <div class="section-head axis measure reveal">
+        <p class="eyebrow"><span class="num">Room VI</span> &middot; Rhythm</p>
+        <h2>Repetition the eye can trust</h2>
+        <p>A colonnade repeats one interval so the whole reads as measure, not noise. So too a page repeats spacing, section structure, and typographic pattern.</p>
+      </div>
+      <div class="rhythm-colonnade reveal" aria-hidden="true">
+        <!-- seven identical bays -->
+        <div class="mini-col"><svg viewBox="0 0 30 96"><rect x="4" y="2" width="22" height="6" fill="#e2d6bc" stroke="#29241d"/><rect x="10" y="8" width="10" height="80" fill="url(#shaft)" stroke="#29241d"/><rect x="4" y="88" width="22" height="8" fill="#e2d6bc" stroke="#29241d"/></svg><span>I</span></div>
+        <div class="mini-col"><svg viewBox="0 0 30 96"><rect x="4" y="2" width="22" height="6" fill="#e2d6bc" stroke="#29241d"/><rect x="10" y="8" width="10" height="80" fill="url(#shaft)" stroke="#29241d"/><rect x="4" y="88" width="22" height="8" fill="#e2d6bc" stroke="#29241d"/></svg><span>II</span></div>
+        <div class="mini-col"><svg viewBox="0 0 30 96"><rect x="4" y="2" width="22" height="6" fill="#e2d6bc" stroke="#29241d"/><rect x="10" y="8" width="10" height="80" fill="url(#shaft)" stroke="#29241d"/><rect x="4" y="88" width="22" height="8" fill="#e2d6bc" stroke="#29241d"/></svg><span>III</span></div>
+        <div class="mini-col"><svg viewBox="0 0 30 96"><rect x="4" y="2" width="22" height="6" fill="#e2d6bc" stroke="#29241d"/><rect x="10" y="8" width="10" height="80" fill="url(#shaft)" stroke="#29241d"/><rect x="4" y="88" width="22" height="8" fill="#e2d6bc" stroke="#29241d"/></svg><span>IV</span></div>
+        <div class="mini-col"><svg viewBox="0 0 30 96"><rect x="4" y="2" width="22" height="6" fill="#e2d6bc" stroke="#29241d"/><rect x="10" y="8" width="10" height="80" fill="url(#shaft)" stroke="#29241d"/><rect x="4" y="88" width="22" height="8" fill="#e2d6bc" stroke="#29241d"/></svg><span>V</span></div>
+        <div class="mini-col"><svg viewBox="0 0 30 96"><rect x="4" y="2" width="22" height="6" fill="#e2d6bc" stroke="#29241d"/><rect x="10" y="8" width="10" height="80" fill="url(#shaft)" stroke="#29241d"/><rect x="4" y="88" width="22" height="8" fill="#e2d6bc" stroke="#29241d"/></svg><span>VI</span></div>
+        <div class="mini-col"><svg viewBox="0 0 30 96"><rect x="4" y="2" width="22" height="6" fill="#e2d6bc" stroke="#29241d"/><rect x="10" y="8" width="10" height="80" fill="url(#shaft)" stroke="#29241d"/><rect x="4" y="88" width="22" height="8" fill="#e2d6bc" stroke="#29241d"/></svg><span>VII</span></div>
+      </div>
+      <div class="rule"><span class="node"></span></div>
+    </div>
+  </section>
+
+  <!-- ============================ VII. HIERARCHY / THE PLAN ============================ -->
   <section id="plan">
     <div class="plan">
       <div class="section-head axis measure reveal">
-        <p class="eyebrow">II &middot; The Plan</p>
+        <p class="eyebrow"><span class="num">Room VII</span> &middot; Hierarchy</p>
         <h2>Rooms, not pages</h2>
-        <p>A homepage is a piazza leading into a palace. The visitor always knows where they stand, what matters, and where they may go next.</p>
+        <p>Every part has a rank and a role. The homepage is a piazza leading into a palace, from crowning pediment down to the load-bearing foundation.</p>
       </div>
       <div class="blueprint reveal" role="img" aria-label="Vertical hierarchy from pediment to foundation">
         <div class="storey crown"><b>Pediment</b><span>identity &amp; crown</span></div>
@@ -617,24 +662,24 @@ section { padding-block: var(--s-12); }
     </div>
   </section>
 
-  <!-- ============================ SIDE CHAMBERS (tripartite / rule of three) ============================ -->
-  <section class="ground">
+  <!-- ============================ VIII. UNITY IN VARIETY ============================ -->
+  <section id="unity" class="ground">
     <div class="plan">
       <div class="section-head axis measure reveal">
-        <p class="eyebrow">X &middot; The Rule of Three</p>
-        <h2>Column &middot; Center &middot; Column</h2>
-        <p>The classical triad, held in balance about a central axis &mdash; and preserved, never scattered, when the viewport narrows.</p>
+        <p class="eyebrow"><span class="num">Room VIII</span> &middot; Unity in Variety</p>
+        <h2>One language, many details</h2>
+        <p>Too much sameness is dull; too much variety is chaos. The classical remedy: a single system, expressed with measured difference &mdash; the very principle you just watched the five orders obey.</p>
       </div>
       <div class="tripartite">
         <div class="chamber reveal">
           <h3>Structure</h3>
-          <p>Layout is drawn first. The grid is the invisible geometry that carries every part.</p>
+          <p>Layout is drawn first; the grid is the invisible geometry that carries every part.</p>
           <p>Hierarchy is decided before a single colour is chosen.</p>
         </div>
         <div class="chamber center reveal">
           <h3>Proportion</h3>
-          <p>Measured relationships bind the parts into a whole. Ratios govern type, spacing, and the reading measure alike.</p>
-          <p>Nothing stands alone; each element answers to the module.</p>
+          <p>Measured relationships bind the parts into a whole; ratios govern type, spacing, and measure alike.</p>
+          <p>Nothing stands alone &mdash; each element answers to the module.</p>
         </div>
         <div class="chamber reveal">
           <h3>Ornament</h3>
@@ -654,24 +699,109 @@ section { padding-block: var(--s-12); }
     <p class="inscription">Ordo &middot; Proportio &middot; Firmitas</p>
     <div class="rule"><span class="node"></span></div>
     <p>Made deliberately. Nothing is accidental. Everything has a place.</p>
-    <small>&copy; MMXXVI &mdash; A Treatise on Classical Web Design, after the Regola of Giacomo Barozzi da Vignola.</small>
+    <small>&copy; MMXXVI &mdash; A Living Treatise on Classical Web Design, after the Regola of Giacomo Barozzi da Vignola.</small>
   </div>
 </footer>
 
+<!-- ============================ THE INSTRUMENT ============================ -->
+<aside class="instrument" aria-label="Order and module controls">
+  <div class="inst-head">
+    <h4>The Instrument<span class="mini">&nbsp;&middot;&nbsp;<span id="rOrderMini">Ionic</span></span></h4>
+    <button class="inst-collapse" id="instCollapse" aria-expanded="true" aria-label="Collapse the instrument" title="Collapse">&minus;</button>
+  </div>
+  <div class="order-tabs" role="group" aria-label="Choose an order">
+    <button class="order-tab" data-order="tuscan" aria-pressed="false">Tus</button>
+    <button class="order-tab" data-order="doric" aria-pressed="false">Dor</button>
+    <button class="order-tab" data-order="ionic" aria-pressed="true">Ion</button>
+    <button class="order-tab" data-order="corinthian" aria-pressed="false">Cor</button>
+    <button class="order-tab" data-order="composite" aria-pressed="false">Com</button>
+  </div>
+  <p class="readout">Order: <b id="rOrder">Ionic</b><br><span id="rDetail">9 diameters &middot; ratio 1 : 1.333</span></p>
+  <button class="grid-toggle" id="gridToggle" aria-pressed="false">Reveal the Module</button>
+</aside>
+
 <script>
-  // IX. Ornament used carefully: a single, quiet reveal on entrance. No excess motion.
+  /* ---- Order data: each is a proportional personality ---- */
+  var ORDERS = {
+    tuscan:     { name: "Tuscan",     char: "Reliability. A plain, sturdy shaft, minimal ornament, strong spacing.", prop: "Height to diameter — 7 diameters. Type ratio 1 : 1.2.", use: "Engineering, government, utility.", slender: "7 diameters", ratio: "1 : 1.2" },
+    doric:      { name: "Doric",      char: "Authority. Heavy proportion, simple capital, a strong rhythm.", prop: "Height to diameter — 8 diameters. Type ratio 1 : 1.25.", use: "Institutions of strength and tradition.", slender: "8 diameters", ratio: "1 : 1.25" },
+    ionic:      { name: "Ionic",      char: "Refinement. Slender proportion, scroll-volutes, elegance without excess.", prop: "Height to diameter — 9 diameters. Type ratio 1 : 1.333.", use: "Culture, education, refined institutions.", slender: "9 diameters", ratio: "1 : 1.333" },
+    corinthian: { name: "Corinthian", char: "Richness. The most slender shaft, acanthus detail, ornament used with intent.", prop: "Height to diameter — 10 diameters. Type ratio 1 : 1.414.", use: "Art, fashion, luxury.", slender: "10 diameters", ratio: "1 : 1.414" },
+    composite:  { name: "Composite",  char: "Union. Strength and elegance joined — many systems, one unity.", prop: "Height to diameter — 10 diameters. Type ratio 1 : 1.5.", use: "Sophisticated, ceremonial institutions.", slender: "10 diameters", ratio: "1 : 1.5" }
+  };
+
+  var html = document.documentElement;
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.order-tab'));
+
+  function applyOrder(key) {
+    if (!ORDERS[key]) key = 'ionic';
+    var o = ORDERS[key];
+    html.setAttribute('data-order', key);
+    tabs.forEach(function (t) { t.setAttribute('aria-pressed', String(t.dataset.order === key)); });
+    document.getElementById('orderName').textContent = o.name;
+    document.getElementById('orderChar').textContent = o.char;
+    document.getElementById('orderProp').textContent = o.prop;
+    document.getElementById('orderUse').textContent  = o.use;
+    document.getElementById('rOrder').textContent    = o.name;
+    document.getElementById('rOrderMini').textContent = o.name;
+    document.getElementById('rDetail').textContent   = o.slender + ' \u00B7 ratio ' + o.ratio;
+    document.getElementById('ratioReadout').textContent = o.ratio;
+    try { localStorage.setItem('classical-order', key); } catch (e) {}
+  }
+
+  tabs.forEach(function (t) { t.addEventListener('click', function () { applyOrder(t.dataset.order); }); });
+
+  /* Restore prior choice */
+  var saved = null;
+  try { saved = localStorage.getItem('classical-order'); } catch (e) {}
+  applyOrder(saved || 'ionic');
+
+  /* ---- Collapse / expand the instrument so it never blocks reading ---- */
+  var instrument = document.querySelector('.instrument');
+  var collapseBtn = document.getElementById('instCollapse');
+  collapseBtn.addEventListener('click', function () {
+    var collapsed = instrument.classList.toggle('collapsed');
+    collapseBtn.textContent = collapsed ? '+' : '\u2212';
+    collapseBtn.setAttribute('aria-expanded', String(!collapsed));
+    collapseBtn.setAttribute('title', collapsed ? 'Expand' : 'Collapse');
+  });
+
+  /* ---- Reveal the module: 8px grid, walls, central spine ---- */
+  var gridBtn = document.getElementById('gridToggle');
+  gridBtn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-grid');
+    gridBtn.setAttribute('aria-pressed', String(on));
+    gridBtn.textContent = on ? 'Conceal the Module' : 'Reveal the Module';
+  });
+
+  /* ---- Dignified entrance: one quiet reveal per element ---- */
   (function () {
     var items = document.querySelectorAll('.reveal');
     if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      items.forEach(function (el) { el.classList.add('seen'); });
-      return;
+      items.forEach(function (el) { el.classList.add('seen'); }); return;
     }
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); }
-      });
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     items.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* ---- Circulation scroll-spy: which room am I in ---- */
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.circulation a'));
+    var map = {};
+    links.forEach(function (a) { map[a.dataset.room] = a; });
+    var rooms = links.map(function (a) { return document.getElementById(a.dataset.room); }).filter(Boolean);
+    if (!('IntersectionObserver' in window)) return;
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (l) { l.classList.remove('here'); });
+          if (map[e.target.id]) map[e.target.id].classList.add('here');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    rooms.forEach(function (r) { spy.observe(r); });
   })();
 </script>
 
