@@ -633,15 +633,22 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
             <rect x="200" y="100" width="62" height="62"/>
             <rect x="162" y="124" width="38" height="38"/>
             <rect x="162" y="100" width="24" height="24"/>
+            <rect x="186" y="100" width="14" height="14"/>
+            <rect x="190" y="114" width="10" height="10"/>
+            <rect x="186" y="120" width="4" height="4"/>
           </g>
           <!-- One continuous spiral: consecutive quarter-arcs share a tangent because
-               each arc's centre is colinear with the previous centre through the join. -->
+               each arc's centre is colinear with the previous centre through the join.
+               The recursion continues into the eye (162,100,62,38,24,14,10,4). -->
           <path d="M0 162
                    A162 162 0 0 1 162 0
                    A100 100 0 0 1 262 100
                    A62 62 0 0 1 200 162
                    A38 38 0 0 1 162 124
-                   A24 24 0 0 1 186 100"
+                   A24 24 0 0 1 186 100
+                   A14 14 0 0 1 200 114
+                   A10 10 0 0 1 190 124
+                   A4 4 0 0 1 186 120"
                 fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round"/>
           <text x="81" y="88" text-anchor="middle" font-family="Cinzel, serif" font-size="15" fill="var(--ink-soft)">1</text>
           <text x="212" y="54" text-anchor="middle" font-family="Cinzel, serif" font-size="9" fill="var(--ink-soft)">0.618</text>
