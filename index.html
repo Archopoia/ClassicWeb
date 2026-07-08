@@ -62,6 +62,7 @@
   --accent-2:    #a9863f;
   --ornament:  0.6;        /* flourish visibility 0..1 */
   --shaft-w:   34;         /* specimen column diameter (svg units) */
+  --facade-scale: 1;       /* hero colonnade slenderness */
   --order-ratio: "1 : 1.333";
   --order-slender: "9 diameters";
 }
@@ -76,31 +77,31 @@ html[data-order="tuscan"] {
   --t-sub: 1.62rem; --t-head: 2.05rem; --t-display: 3rem;
   --w-display: 600; --w-head: 600; --track: 0.06em; --rhythm: 1.58;
   --accent: #7a6a4a; --accent-2: #8a765123; --ornament: 0.06;
-  --shaft-w: 44; --order-ratio: "1 : 1.2"; --order-slender: "7 diameters";
+  --shaft-w: 44; --facade-scale: 1.4; --order-ratio: "1 : 1.2"; --order-slender: "7 diameters";
 }
 html[data-order="doric"] {
   --t-sub: 1.75rem; --t-head: 2.6rem; --t-display: 3.6rem;
   --w-display: 600; --w-head: 600; --track: 0.09em; --rhythm: 1.6;
   --accent: #6f5a2e; --accent-2: #9c7a3f; --ornament: 0.25;
-  --shaft-w: 38; --order-ratio: "1 : 1.25"; --order-slender: "8 diameters";
+  --shaft-w: 38; --facade-scale: 1.18; --order-ratio: "1 : 1.25"; --order-slender: "8 diameters";
 }
 html[data-order="ionic"] {
   --t-sub: 2rem; --t-head: 3rem; --t-display: 4.5rem;
   --w-display: 500; --w-head: 500; --track: 0.16em; --rhythm: 1.7;
   --accent: #8a6a34; --accent-2: #a9863f; --ornament: 0.6;
-  --shaft-w: 30; --order-ratio: "1 : 1.333"; --order-slender: "9 diameters";
+  --shaft-w: 30; --facade-scale: 1; --order-ratio: "1 : 1.333"; --order-slender: "9 diameters";
 }
 html[data-order="corinthian"] {
   --t-sub: 2.25rem; --t-head: 3.6rem; --t-display: 5.6rem;
   --w-display: 500; --w-head: 500; --track: 0.2em; --rhythm: 1.75;
   --accent: #a9863f; --accent-2: #c19a4a; --ornament: 1;
-  --shaft-w: 24; --order-ratio: "1 : 1.414"; --order-slender: "10 diameters";
+  --shaft-w: 24; --facade-scale: 0.72; --order-ratio: "1 : 1.414"; --order-slender: "10 diameters";
 }
 html[data-order="composite"] {
   --t-sub: 2.4rem; --t-head: 3.9rem; --t-display: 6rem;
   --w-display: 600; --w-head: 500; --track: 0.18em; --rhythm: 1.72;
   --accent: #9c7a3f; --accent-2: #c19a4a; --ornament: 1;
-  --shaft-w: 24; --order-ratio: "1 : 1.5"; --order-slender: "10 diameters";
+  --shaft-w: 24; --facade-scale: 0.72; --order-ratio: "1 : 1.5"; --order-slender: "10 diameters";
 }
 
 /* =====================================================================
@@ -268,6 +269,13 @@ body.show-grid .overlay { opacity: 1; }
    ===================================================================== */
 .portico { position: relative; padding-top: var(--s-12); padding-bottom: var(--s-10); overflow: hidden; }
 .facade { display: block; width: 100%; max-width: calc(var(--module) * 90); margin: 0 auto var(--s-6); }
+/* The hero colonnade re-proportions with the chosen order */
+.facade .fcol {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scaleX(var(--facade-scale));
+  transition: transform 520ms cubic-bezier(.2,.7,.2,1);
+}
 .portico h1 {
   font-family: "Cormorant Garamond", serif; font-weight: var(--w-display);
   font-size: var(--t-display); line-height: 1.08; margin: 0 0 var(--s-3);
@@ -315,6 +323,24 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
 .order-desc dt { font-family: "Cinzel", serif; font-size: var(--t-caption); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-top: var(--s-3); }
 .order-desc dd { margin: var(--s-1) 0 0; color: var(--ink-soft); }
 .order-desc dd.hint { font-style: italic; }
+/* In-flow order selector inside Room III */
+.order-picker { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2); margin-top: var(--s-8); }
+.order-picker .order-tab {
+  font-family: "Cinzel", serif; font-size: var(--t-caption); letter-spacing: 0.12em;
+  text-transform: uppercase; padding: var(--s-2) var(--s-4); border: 1px solid var(--line-strong);
+  background: var(--marble); color: var(--ink-soft); cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.order-picker .order-tab:hover { border-color: var(--accent); color: var(--ink); }
+.order-picker .order-tab[aria-pressed="true"] { background: var(--ink); color: var(--stone); border-color: var(--ink); }
+.picker-note { margin-top: var(--s-3); color: var(--ink-soft); font-size: var(--t-caption); }
+.picker-note b { color: var(--accent); }
+.linkish {
+  font-family: "EB Garamond", serif; font-size: var(--t-caption); color: var(--accent);
+  background: none; border: none; border-bottom: 1px solid var(--accent); padding: 0 0 1px;
+  cursor: pointer; font-style: italic;
+}
+.linkish:hover { color: var(--ink); border-color: var(--ink); }
 
 /* Golden section diagram */
 .phi-room { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-8); align-items: center; }
@@ -323,6 +349,14 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
 .ledger li { display: flex; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) 0; border-bottom: 1px solid var(--line); }
 .ledger li:first-child { border-top: 1px solid var(--line); }
 .ledger .ratio { font-family: "Cinzel", serif; letter-spacing: 0.06em; color: var(--accent); white-space: nowrap; }
+
+/* Human scale room — the body is the measure */
+.human-room { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-8); align-items: center; }
+.human-figure { width: 100%; height: auto; border: 1px solid var(--line); background: var(--marble); }
+.human-list { list-style: none; margin: var(--s-2) 0 0; padding: 0; }
+.human-list li { display: flex; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) 0; border-bottom: 1px solid var(--line); }
+.human-list li:first-child { border-top: 1px solid var(--line); }
+.human-list .val { font-family: "Cinzel", serif; letter-spacing: 0.06em; color: var(--accent); white-space: nowrap; }
 
 /* Symmetry room — mirrored bays about the axis */
 .symmetry { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--s-4); align-items: stretch; }
@@ -374,7 +408,7 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
    ===================================================================== */
 @media (max-width: 68rem) {
   .circulation { display: none; }
-  .orders-room, .phi-room { grid-template-columns: 1fr; gap: var(--s-6); }
+  .orders-room, .phi-room, .human-room { grid-template-columns: 1fr; gap: var(--s-6); }
   .rhythm-colonnade { grid-template-columns: repeat(7, 1fr); }
 }
 @media (max-width: 52rem) {
@@ -432,7 +466,8 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
   <a href="#symmetry" data-room="symmetry">V</a>
   <a href="#rhythm" data-room="rhythm">VI</a>
   <a href="#plan" data-room="plan">VII</a>
-  <a href="#unity" data-room="unity">VIII</a>
+  <a href="#human" data-room="human">VIII</a>
+  <a href="#unity" data-room="unity">IX</a>
 </nav>
 
 <main id="top">
@@ -452,22 +487,36 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
           <circle cx="360" cy="92" r="8" style="fill:var(--accent)" stroke="none"/>
           <rect x="30" y="120" width="660" height="16" fill="#e7dcc4"/>
           <rect x="30" y="136" width="660" height="10" fill="#efe7d6"/>
-          <g>
-            <rect x="70" y="150" width="34" height="112" fill="url(#shaft)"/><rect x="184" y="150" width="34" height="112" fill="url(#shaft)"/>
-            <rect x="298" y="150" width="34" height="112" fill="url(#shaft)"/><rect x="388" y="150" width="34" height="112" fill="url(#shaft)"/>
-            <rect x="502" y="150" width="34" height="112" fill="url(#shaft)"/><rect x="616" y="150" width="34" height="112" fill="url(#shaft)"/>
+          <!-- Six columns; each group's slenderness follows the chosen order (--facade-scale) -->
+          <g class="fcol">
+            <rect x="64" y="146" width="46" height="6" fill="#e7dcc4" vector-effect="non-scaling-stroke"/>
+            <rect x="70" y="150" width="34" height="112" fill="url(#shaft)" vector-effect="non-scaling-stroke"/>
+            <line x1="81" y1="152" x2="81" y2="260" stroke="#c9bb9c" stroke-width="0.75"/><line x1="93" y1="152" x2="93" y2="260" stroke="#c9bb9c" stroke-width="0.75"/>
           </g>
-          <g fill="#e7dcc4">
-            <rect x="64" y="146" width="46" height="6"/><rect x="178" y="146" width="46" height="6"/><rect x="292" y="146" width="46" height="6"/>
-            <rect x="382" y="146" width="46" height="6"/><rect x="496" y="146" width="46" height="6"/><rect x="610" y="146" width="46" height="6"/>
+          <g class="fcol">
+            <rect x="178" y="146" width="46" height="6" fill="#e7dcc4" vector-effect="non-scaling-stroke"/>
+            <rect x="184" y="150" width="34" height="112" fill="url(#shaft)" vector-effect="non-scaling-stroke"/>
+            <line x1="195" y1="152" x2="195" y2="260" stroke="#c9bb9c" stroke-width="0.75"/><line x1="207" y1="152" x2="207" y2="260" stroke="#c9bb9c" stroke-width="0.75"/>
           </g>
-          <g stroke="#c9bb9c" stroke-width="0.75">
-            <line x1="81" y1="152" x2="81" y2="260"/><line x1="93" y1="152" x2="93" y2="260"/>
-            <line x1="195" y1="152" x2="195" y2="260"/><line x1="207" y1="152" x2="207" y2="260"/>
-            <line x1="309" y1="152" x2="309" y2="260"/><line x1="321" y1="152" x2="321" y2="260"/>
-            <line x1="399" y1="152" x2="399" y2="260"/><line x1="411" y1="152" x2="411" y2="260"/>
-            <line x1="513" y1="152" x2="513" y2="260"/><line x1="525" y1="152" x2="525" y2="260"/>
-            <line x1="627" y1="152" x2="627" y2="260"/><line x1="639" y1="152" x2="639" y2="260"/>
+          <g class="fcol">
+            <rect x="292" y="146" width="46" height="6" fill="#e7dcc4" vector-effect="non-scaling-stroke"/>
+            <rect x="298" y="150" width="34" height="112" fill="url(#shaft)" vector-effect="non-scaling-stroke"/>
+            <line x1="309" y1="152" x2="309" y2="260" stroke="#c9bb9c" stroke-width="0.75"/><line x1="321" y1="152" x2="321" y2="260" stroke="#c9bb9c" stroke-width="0.75"/>
+          </g>
+          <g class="fcol">
+            <rect x="382" y="146" width="46" height="6" fill="#e7dcc4" vector-effect="non-scaling-stroke"/>
+            <rect x="388" y="150" width="34" height="112" fill="url(#shaft)" vector-effect="non-scaling-stroke"/>
+            <line x1="399" y1="152" x2="399" y2="260" stroke="#c9bb9c" stroke-width="0.75"/><line x1="411" y1="152" x2="411" y2="260" stroke="#c9bb9c" stroke-width="0.75"/>
+          </g>
+          <g class="fcol">
+            <rect x="496" y="146" width="46" height="6" fill="#e7dcc4" vector-effect="non-scaling-stroke"/>
+            <rect x="502" y="150" width="34" height="112" fill="url(#shaft)" vector-effect="non-scaling-stroke"/>
+            <line x1="513" y1="152" x2="513" y2="260" stroke="#c9bb9c" stroke-width="0.75"/><line x1="525" y1="152" x2="525" y2="260" stroke="#c9bb9c" stroke-width="0.75"/>
+          </g>
+          <g class="fcol">
+            <rect x="610" y="146" width="46" height="6" fill="#e7dcc4" vector-effect="non-scaling-stroke"/>
+            <rect x="616" y="150" width="34" height="112" fill="url(#shaft)" vector-effect="non-scaling-stroke"/>
+            <line x1="627" y1="152" x2="627" y2="260" stroke="#c9bb9c" stroke-width="0.75"/><line x1="639" y1="152" x2="639" y2="260" stroke="#c9bb9c" stroke-width="0.75"/>
           </g>
           <rect x="40" y="262" width="640" height="10" fill="#e7dcc4"/>
           <rect x="20" y="272" width="680" height="12" fill="#e2d6bc"/>
@@ -494,7 +543,7 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
       <div class="section-head axis measure reveal">
         <p class="eyebrow"><span class="num">Room II</span> &middot; The Module</p>
         <h2>Everything begins with one unit</h2>
-        <p>As the column&rsquo;s diameter governs a temple, a single module of <b>8&nbsp;pixels</b> governs this page. Press <em>&ldquo;Reveal the Module&rdquo;</em> in the instrument to see the true 8px grid and central axis beneath every element.</p>
+        <p>As the column&rsquo;s diameter governs a temple, a single module of <b>8&nbsp;pixels</b> governs this page. Use <em>&ldquo;Reveal the module&rdquo;</em> in the next room (or the instrument) to see the true 8px grid and central axis beneath every element.</p>
       </div>
       <div class="module-figure reveal">
         <div class="course"><b>1&times;</b><span class="bar" style="width:8px"></span><span>8px &middot; hairline</span></div>
@@ -542,7 +591,7 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
             <dd id="orderProp">Height to diameter &mdash; 9 diameters. Type ratio 1 : 1.333.</dd>
             <dt>Fit for</dt>
             <dd id="orderUse">Culture, education, refined institutions.</dd>
-            <dd class="hint">Try each in the instrument, lower-right &mdash; watch the shaft, the type, the tracking, and the ornament change together.</dd>
+            <dd class="hint">Choose an order below &mdash; watch the shaft, the type, the tracking, and the ornament change together across the whole treatise.</dd>
           </dl>
           <svg class="flourish" viewBox="0 0 120 24" aria-hidden="true">
             <path d="M60 20 C40 20 44 4 30 6 C18 8 20 18 8 16 M60 20 C80 20 76 4 90 6 C102 8 100 18 112 16" fill="none" stroke="currentColor" stroke-width="1.4"/>
@@ -550,6 +599,17 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
           </svg>
         </div>
       </div>
+
+      <!-- In-flow order selector: the primary control, never overlapping content -->
+      <div class="order-picker reveal" role="group" aria-label="Choose an order">
+        <button class="order-tab" data-order="tuscan" aria-pressed="false">Tuscan</button>
+        <button class="order-tab" data-order="doric" aria-pressed="false">Doric</button>
+        <button class="order-tab" data-order="ionic" aria-pressed="true">Ionic</button>
+        <button class="order-tab" data-order="corinthian" aria-pressed="false">Corinthian</button>
+        <button class="order-tab" data-order="composite" aria-pressed="false">Composite</button>
+      </div>
+      <p class="picker-note axis reveal">Now standing in the <b id="rInRoom">Ionic</b> order. <button class="grid-toggle linkish">Reveal the module</button></p>
+
       <div class="rule"><span class="node"></span></div>
     </div>
   </section>
@@ -662,11 +722,74 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
     </div>
   </section>
 
-  <!-- ============================ VIII. UNITY IN VARIETY ============================ -->
-  <section id="unity" class="ground">
+  <!-- ============================ VIII. HUMAN SCALE ============================ -->
+  <section id="human" class="ground">
     <div class="plan">
       <div class="section-head axis measure reveal">
-        <p class="eyebrow"><span class="num">Room VIII</span> &middot; Unity in Variety</p>
+        <p class="eyebrow"><span class="num">Room VIII</span> &middot; Human Scale</p>
+        <h2>Measured to the body</h2>
+        <p>A classical building is neither crushing nor trivial: its doors, stairs, and columns answer to the moving body. A page keeps the same courtesy &mdash; a line the eye can track, text the body can rest within, targets the hand can strike.</p>
+      </div>
+      <div class="human-room reveal">
+        <svg class="human-figure" viewBox="0 0 240 300" role="img" aria-label="A classical doorway proportioned to a human figure">
+          <defs>
+            <linearGradient id="pil" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#e7dcc4"/><stop offset="0.5" stop-color="#f6efe0"/><stop offset="1" stop-color="#e2d6bc"/>
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="#29241d" stroke-width="1.4">
+            <!-- pediment -->
+            <polygon points="120,18 214,46 26,46" fill="#efe7d6"/>
+            <polygon points="120,30 196,46 44,46" fill="none" style="stroke:var(--accent)" stroke-width="1"/>
+            <circle cx="120" cy="40" r="4.5" style="fill:var(--accent)" stroke="none"/>
+            <!-- architrave -->
+            <rect x="30" y="46" width="180" height="14" fill="#e7dcc4"/>
+            <!-- recessed doorway -->
+            <rect x="66" y="60" width="108" height="220" fill="#e5dbc6"/>
+            <!-- pilasters -->
+            <rect x="40" y="60" width="24" height="220" fill="url(#pil)"/>
+            <rect x="176" y="60" width="24" height="220" fill="url(#pil)"/>
+            <!-- capitals -->
+            <rect x="34" y="54" width="36" height="8" fill="#e7dcc4"/>
+            <rect x="170" y="54" width="36" height="8" fill="#e7dcc4"/>
+            <!-- stylobate / ground -->
+            <rect x="22" y="280" width="196" height="10" fill="#e2d6bc"/>
+          </g>
+          <!-- the human, drawn to the scale of the door -->
+          <g style="fill:var(--accent)">
+            <circle cx="120" cy="150" r="9"/>
+            <path d="M120 162 C105 162 103 180 103 200 L103 226 L110 226 L112 202 C112 196 128 196 128 202 L130 226 L137 226 L137 200 C137 180 135 162 120 162 Z"/>
+            <path d="M110 226 L107 279 L114 279 L117 227 Z"/>
+            <path d="M130 226 L133 279 L126 279 L123 227 Z"/>
+          </g>
+          <!-- height dimension of the figure -->
+          <g stroke="#5b5142" stroke-width="0.8" fill="#5b5142">
+            <line x1="150" y1="141" x2="150" y2="279"/>
+            <path d="M147 144 L150 138 L153 144 Z"/>
+            <path d="M147 276 L150 282 L153 276 Z"/>
+            <text x="156" y="214" font-family="Cinzel, serif" font-size="9" stroke="none">1 human</text>
+          </g>
+        </svg>
+        <div>
+          <ul class="human-list">
+            <li><span>Reading measure</span><span class="val">&asymp; 66 characters</span></li>
+            <li><span>Body text</span><span class="val">18px &middot; arm&rsquo;s length</span></li>
+            <li><span>Line height</span><span class="val">1.7 &middot; room to breathe</span></li>
+            <li><span>Touch / click target</span><span class="val">&ge; 6 modules</span></li>
+            <li><span>Doorway to figure</span><span class="val">admits the body</span></li>
+          </ul>
+          <p style="color:var(--ink-soft); margin-top:var(--s-3)">Nothing here is sized to impress; everything is sized to be used. The visitor should feel welcomed, never dwarfed &mdash; the oldest courtesy of the orders.</p>
+        </div>
+      </div>
+      <div class="rule"><span class="node"></span></div>
+    </div>
+  </section>
+
+  <!-- ============================ IX. UNITY IN VARIETY ============================ -->
+  <section id="unity">
+    <div class="plan">
+      <div class="section-head axis measure reveal">
+        <p class="eyebrow"><span class="num">Room IX</span> &middot; Unity in Variety</p>
         <h2>One language, many details</h2>
         <p>Too much sameness is dull; too much variety is chaos. The classical remedy: a single system, expressed with measured difference &mdash; the very principle you just watched the five orders obey.</p>
       </div>
@@ -704,10 +827,10 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
 </footer>
 
 <!-- ============================ THE INSTRUMENT ============================ -->
-<aside class="instrument" aria-label="Order and module controls">
+<aside class="instrument collapsed" aria-label="Order and module controls">
   <div class="inst-head">
     <h4>The Instrument<span class="mini">&nbsp;&middot;&nbsp;<span id="rOrderMini">Ionic</span></span></h4>
-    <button class="inst-collapse" id="instCollapse" aria-expanded="true" aria-label="Collapse the instrument" title="Collapse">&minus;</button>
+    <button class="inst-collapse" id="instCollapse" aria-expanded="false" aria-label="Expand the instrument" title="Expand">+</button>
   </div>
   <div class="order-tabs" role="group" aria-label="Choose an order">
     <button class="order-tab" data-order="tuscan" aria-pressed="false">Tus</button>
@@ -746,6 +869,8 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
     document.getElementById('rOrderMini').textContent = o.name;
     document.getElementById('rDetail').textContent   = o.slender + ' \u00B7 ratio ' + o.ratio;
     document.getElementById('ratioReadout').textContent = o.ratio;
+    var inRoom = document.getElementById('rInRoom');
+    if (inRoom) inRoom.textContent = o.name;
     try { localStorage.setItem('classical-order', key); } catch (e) {}
   }
 
@@ -766,12 +891,18 @@ section { padding-block: var(--s-12); position: relative; scroll-margin-top: var
     collapseBtn.setAttribute('title', collapsed ? 'Expand' : 'Collapse');
   });
 
-  /* ---- Reveal the module: 8px grid, walls, central spine ---- */
-  var gridBtn = document.getElementById('gridToggle');
-  gridBtn.addEventListener('click', function () {
-    var on = document.body.classList.toggle('show-grid');
-    gridBtn.setAttribute('aria-pressed', String(on));
-    gridBtn.textContent = on ? 'Conceal the Module' : 'Reveal the Module';
+  /* ---- Reveal the module: 8px grid, walls, central spine (any grid-toggle) ---- */
+  var gridBtns = Array.prototype.slice.call(document.querySelectorAll('.grid-toggle'));
+  function syncGrid(on) {
+    gridBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(on));
+      b.textContent = on ? 'Conceal the module' : 'Reveal the module';
+    });
+  }
+  gridBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      syncGrid(document.body.classList.toggle('show-grid'));
+    });
   });
 
   /* ---- Dignified entrance: one quiet reveal per element ---- */
